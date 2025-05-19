@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
+# SPDX-License-Identifier: MIT
+---
+# tasks file for apt_sources
+
+- name: Exit if contradicting variables are set
+  ansible.builtin.fail:
+    msg: >
+      "apt_sources_testing set to {{ apt_sources_testing }} and
+      apt_sources_unstable set to {{ apt_sources_unstable }}."
+  when: apt_sources_testing and apt_sources_unstable
+
+- name: Build apt sources.list for older Debian hosts from template
+  ansible.builtin.template:
+    src: "templates/{{ ansible_distribution }}/sources.list.j2"
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  when: ansible_distribution == "Debian"
+  notify:
+    - 'apt_sources : Update apt cache'
+
+- name: Build apt sources for recent Ubuntu hosts from template
+  ansible.builtin.template:
+    src: "templates/{{ ansible_distribution }}/ubuntu.sources.j2"
+    dest: /etc/apt/sources.list.d/ubuntu.sources
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  when: (ansible_distribution == "Ubuntu") and
+        (ansible_distribution_version is version('24.04', '>='))
+  notify:
+    - 'apt_sources : Update apt cache'
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

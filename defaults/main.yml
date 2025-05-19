@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
+# SPDX-License-Identifier: MIT
+---
+# defaults file for apt_sources
+apt_sources_backports: false
+apt_sources_components: "main"
+apt_sources_debian_archive_up_to_ver: 9
+apt_sources_testing: false
+apt_sources_unstable: false
+apt_sources_uri: "http://deb.debian.org"

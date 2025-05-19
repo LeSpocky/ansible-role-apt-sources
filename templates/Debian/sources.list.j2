@@ -1,0 +1,50 @@
+# {{ ansible_managed }}
+# SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
+# SPDX-License-Identifier: CC0-1.0
+
+{% if not apt_sources_unstable %}
+
+{% if apt_sources_testing or (ansible_distribution_major_version | int > apt_sources_debian_archive_up_to_ver) %}
+
+deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+
+{% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}
+deb {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components }}
+{% else %}
+deb {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+{% endif %}
+
+# {{ ansible_distribution_release }}-updates, to get updates before a point release is made;
+# see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_updates_and_backports
+deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components }}
+
+{% if apt_sources_backports %}
+deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+{% endif %} {# backports #}
+
+{% else %} {# archive #}
+
+deb {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+
+deb {{ apt_sources_uri }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+
+{% if apt_sources_backports %}
+deb {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+{% endif %} {# backports #}
+
+{% endif %} {# archive #}
+
+{% else %} {# unstable #}
+
+deb {{ apt_sources_uri }}/debian/ unstable {{ apt_sources_components }}
+deb-src {{ apt_sources_uri }}/debian/ unstable {{ apt_sources_components }}
+
+{% endif %} {# unstable #}
