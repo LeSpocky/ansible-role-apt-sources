@@ -20,7 +20,7 @@
     backup: true
   when: ansible_distribution == "Debian"
   notify:
-    - 'apt_sources : Update apt cache'
+    - 'lespocky.apt_sources : Update apt cache'
 
 - name: Build apt sources for recent Ubuntu hosts from template
   ansible.builtin.template:
@@ -33,7 +33,7 @@
   when: (ansible_distribution == "Ubuntu") and
         (ansible_distribution_version is version('24.04', '>='))
   notify:
-    - 'apt_sources : Update apt cache'
+    - 'lespocky.apt_sources : Update apt cache'
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
