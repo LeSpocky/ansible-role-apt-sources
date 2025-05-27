@@ -6,45 +6,54 @@
 
 {% if apt_sources_testing or (ansible_distribution_major_version | int > apt_sources_debian_archive_up_to_ver) %}
 
-deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components|join(' ') }}
+{% endfor %}
 
 {% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}
-deb {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url_security }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components|join(' ') }}
+{% endfor %}
 {% else %}
-deb {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url_security }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components|join(' ') }}
+{% endfor %}
 {% endif %}
 
 # {{ ansible_distribution_release }}-updates, to get updates before a point release is made;
 # see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_updates_and_backports
-deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components|join(' ') }}
+{% endfor %}
 
 {% if apt_sources_backports %}
-deb {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components|join(' ') }}
+{% endfor %}
 {% endif %} {# backports #}
 
 {% else %} {# archive #}
 
-deb {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components|join(' ') }}
+{% endfor %}
 
-deb {{ apt_sources_uri }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components|join(' ') }}
+{% endfor %}
 
 {% if apt_sources_backports %}
-deb {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components|join(' ') }}
+{% endfor %}
 {% endif %} {# backports #}
 
 {% endif %} {# archive #}
 
 {% else %} {# unstable #}
 
-deb {{ apt_sources_uri }}/debian/ unstable {{ apt_sources_components }}
-deb-src {{ apt_sources_uri }}/debian/ unstable {{ apt_sources_components }}
+{% for archive_type in apt_sources_archive_types %}
+{{ archive_type }} {{ apt_sources_repository_url }}/debian/ unstable {{ apt_sources_components|join(' ') }}
+{% endfor %}
 
 {% endif %} {# unstable #}

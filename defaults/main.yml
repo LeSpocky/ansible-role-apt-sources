@@ -2,9 +2,14 @@
 # SPDX-License-Identifier: MIT
 ---
 # defaults file for apt_sources
+apt_sources_archive_types:
+  - "deb"
+  - "deb-src"
 apt_sources_backports: false
-apt_sources_components: "main"
+apt_sources_components:
+  - "main"
 apt_sources_debian_archive_up_to_ver: 9
+apt_sources_repository_url: "http://deb.debian.org"
+apt_sources_repository_url_security: "http://security.debian.org"
 apt_sources_testing: false
 apt_sources_unstable: false
-apt_sources_uri: "http://deb.debian.org"
