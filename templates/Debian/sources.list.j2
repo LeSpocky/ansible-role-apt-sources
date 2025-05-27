@@ -2,58 +2,19 @@
 # SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
 # SPDX-License-Identifier: CC0-1.0
 
-{% if not apt_sources_unstable %}
-
-{% if apt_sources_testing or (ansible_distribution_major_version | int > apt_sources_debian_archive_up_to_ver) %}
-
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }} {{ apt_sources_components|join(' ') }}
-{% endfor %}
-
-{% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url_security }}/debian-security/ {{ ansible_distribution_release }}-security {{ apt_sources_components|join(' ') }}
-{% endfor %}
+{% if apt_sources_unstable %}
+{% set sources = apt_sources.debian_unstable %}
+{% elif ansible_distribution_major_version|int <= apt_sources_debian_archive_up_to_ver %}
+{% set sources = apt_sources.debian_archive %}
 {% else %}
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url_security }}/debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components|join(' ') }}
-{% endfor %}
+{% set sources = apt_sources.debian %}
 {% endif %}
 
-# {{ ansible_distribution_release }}-updates, to get updates before a point release is made;
-# see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_updates_and_backports
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }}-updates {{ apt_sources_components|join(' ') }}
+{% for source in sources %}
+{% for suite in source.suites %}
+{% for type in source.types %}
+{{ type }} http://{{ source.uri.host }}{% if source.uri.port != 80 %}:{{ source.uri.port }}{% endif %}/{{ source.uri.path }}/ {{ suite }} {{ source.components|join(' ') }}
 {% endfor %}
 
-{% if apt_sources_backports %}
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components|join(' ') }}
 {% endfor %}
-{% endif %} {# backports #}
-
-{% else %} {# archive #}
-
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian/ {{ ansible_distribution_release }} {{ apt_sources_components|join(' ') }}
 {% endfor %}
-
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian-security/ {{ ansible_distribution_release }}/updates {{ apt_sources_components|join(' ') }}
-{% endfor %}
-
-{% if apt_sources_backports %}
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/archive-debian/ {{ ansible_distribution_release }}-backports {{ apt_sources_components|join(' ') }}
-{% endfor %}
-{% endif %} {# backports #}
-
-{% endif %} {# archive #}
-
-{% else %} {# unstable #}
-
-{% for archive_type in apt_sources_archive_types %}
-{{ archive_type }} {{ apt_sources_repository_url }}/debian/ unstable {{ apt_sources_components|join(' ') }}
-{% endfor %}
-
-{% endif %} {# unstable #}

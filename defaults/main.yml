@@ -2,14 +2,41 @@
 # SPDX-License-Identifier: MIT
 ---
 # defaults file for apt_sources
-apt_sources_archive_types:
-  - "deb"
-  - "deb-src"
 apt_sources_backports: false
-apt_sources_components:
-  - "main"
 apt_sources_debian_archive_up_to_ver: 9
-apt_sources_repository_url: "http://deb.debian.org"
-apt_sources_repository_url_security: "http://security.debian.org"
 apt_sources_testing: false
 apt_sources_unstable: false
+
+apt_sources_types:
+  - "deb"
+  # - "deb-src"
+
+apt_sources_debian_components:
+  - "main"
+
+apt_sources_debian_uri_host: "deb.debian.org"
+apt_sources_debian_uri_port: 80
+apt_sources_debian_uri_path: "debian"
+
+apt_sources_debian_security_uri_host: "security.debian.org"
+apt_sources_debian_security_uri_port: 80
+apt_sources_debian_security_uri_path: "debian-security"
+
+apt_sources_debian_archive_uri_host: "archive.debian.org"
+apt_sources_debian_archive_uri_port: 80
+apt_sources_debian_archive_uri_path: "debian"
+apt_sources_debian_archive_security_uri_path: "debian-security"
+
+apt_sources_ubuntu_uri_host: "de.archive.ubuntu.com"
+apt_sources_ubuntu_uri_port: 80
+apt_sources_ubuntu_uri_path: "ubuntu"
+
+apt_sources_ubuntu_uri_security_host: "security.ubuntu.com"
+apt_sources_ubuntu_uri_security_port: 80
+apt_sources_ubuntu_uri_security_path: "ubuntu"
+
+apt_sources_ubuntu_components:
+  - "main"
+  - "restricted"
+  - "universe"
+  - "multiverse"

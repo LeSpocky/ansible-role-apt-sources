@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
+# SPDX-License-Identifier: MIT
+---
+apt_sources_debian_suites:
+  - "{{ ansible_distribution_release }}"
+  - "{% if ansible_distribution_major_version | int > apt_sources_debian_archive_up_to_ver %}{{ ansible_distribution_release }}-updates{% endif %}"
+  - "{% if apt_sources_backports %}{{ ansible_distribution_release }}-backports{% endif %}"
+
+apt_sources_debian_security_suites:
+  - "{% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}{{ ansible_distribution_release }}-security{% else %}{{ ansible_distribution_release }}/updates{% endif %}"
+
+apt_sources:
+  debian:
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_debian_uri_host }}"
+        port: "{{ apt_sources_debian_uri_port }}"
+        path: "{{ apt_sources_debian_uri_path }}"
+      suites: "{{ apt_sources_debian_suites | reject('eq', '') }}"
+      components: "{{ apt_sources_debian_components }}"
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_debian_security_uri_host }}"
+        port: "{{ apt_sources_debian_security_uri_port }}"
+        path: "{{ apt_sources_debian_security_uri_path }}"
+      suites: "{{ apt_sources_debian_security_suites }}"
+      components: "{{ apt_sources_debian_components }}"
+  debian_archive:
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_debian_archive_uri_host }}"
+        port: "{{ apt_sources_debian_archive_uri_port }}"
+        path: "{{ apt_sources_debian_archive_uri_path }}"
+      suites: "{{ apt_sources_debian_suites | reject('eq', '') }}"
+      components: "{{ apt_sources_debian_components }}"
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_debian_archive_uri_host }}"
+        port: "{{ apt_sources_debian_archive_uri_port }}"
+        path: "{{ apt_sources_debian_archive_security_uri_path }}"
+      suites:
+        - "{{ ansible_distribution_release }}/updates"
+      components: "{{ apt_sources_debian_components }}"
+  debian_unstable:
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_debian_uri_host }}"
+        port: "{{ apt_sources_debian_uri_port }}"
+        path: "{{ apt_sources_debian_uri_path }}"
+      suites:
+        - unstable
+      components: "{{ apt_sources_debian_components }}"
+  ubuntu:
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_ubuntu_uri_host }}"
+        port: "{{ apt_sources_ubuntu_uri_port }}"
+        path: "{{ apt_sources_ubuntu_uri_path }}"
+      suites:
+        - "{{ ansible_distribution_release }}"
+        - "{{ ansible_distribution_release }}-updates"
+        - "{{ ansible_distribution_release }}-backports"
+      components: "{{ apt_sources_ubuntu_components }}"
+    - types: "{{ apt_sources_types }}"
+      uri:
+        host: "{{ apt_sources_ubuntu_uri_security_host }}"
+        port: "{{ apt_sources_ubuntu_uri_security_port }}"
+        path: "{{ apt_sources_ubuntu_uri_security_path }}"
+      suites:
+        - "{{ ansible_distribution_release }}-security"
+      components: "{{ apt_sources_ubuntu_components }}"

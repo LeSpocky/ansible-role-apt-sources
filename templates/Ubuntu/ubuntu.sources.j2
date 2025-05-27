@@ -2,16 +2,11 @@
 # SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
 # SPDX-License-Identifier: CC0-1.0
 
-Types: deb
-#URIs: http://de.archive.ubuntu.com/ubuntu/
-URIs: {{ apt_sources_uri }}/ubuntu/
-Suites: {{ ansible_distribution_release }} {{ ansible_distribution_release }}-updates {{ ansible_distribution_release }}-backports
-Components: main restricted universe multiverse
+{% for source in apt_sources.ubuntu %}
+Types: {{ source.types|join(' ') }}
+URIs: http://{{ source.uri.host }}{% if source.uri.port != 80 %}:{{ source.uri.port }}{% endif %}/{{ source.uri.path }}/
+Suites: {{ source.suites|join(' ') }}
+Components: {{ source.components|join(' ') }}
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
-Types: deb
-#URIs: http://security.ubuntu.com/ubuntu/
-URIs: {{ apt_sources_uri }}/ubuntu-security/
-Suites: {{ ansible_distribution_release }}-security
-Components: main restricted universe multiverse
-Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+{% endfor %}
