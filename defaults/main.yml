@@ -3,7 +3,7 @@
 ---
 # defaults file for apt_sources
 apt_sources_backports: false
-apt_sources_debian_archive_up_to_ver: 9
+apt_sources_debian_archive_up_to_ver: 10
 apt_sources_testing: false
 apt_sources_unstable: false
 
