@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2025 Alexander Dahl <post@lespocky.de>
 # SPDX-License-Identifier: MIT
 ---
+# yamllint disable rule:line-length
+
 apt_sources_debian_suites:
   - "{{ ansible_distribution_release }}"
   - "{% if ansible_distribution_major_version | int > apt_sources_debian_archive_up_to_ver %}{{ ansible_distribution_release }}-updates{% endif %}"
@@ -8,6 +10,8 @@ apt_sources_debian_suites:
 
 apt_sources_debian_security_suites:
   - "{% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}{{ ansible_distribution_release }}-security{% else %}{{ ansible_distribution_release }}/updates{% endif %}"
+
+# yamllint enable rule:line-length
 
 apt_sources:
   debian:
