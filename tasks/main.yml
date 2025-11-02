@@ -10,6 +10,12 @@
       apt_sources_unstable set to {{ apt_sources_unstable }}."
   when: apt_sources_testing and apt_sources_unstable
 
+
+- name: Print the whole apt sources data structure
+  ansible.builtin.debug:
+    var: apt_sources
+    verbosity: 2
+
 - name: Build apt sources.list for older Debian hosts from template
   ansible.builtin.template:
     src: "templates/{{ ansible_distribution }}/sources.list.j2"
