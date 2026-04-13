@@ -4,7 +4,7 @@
 
 {% if apt_sources_unstable %}
 {% set sources = apt_sources.debian_unstable %}
-{% elif ansible_distribution_major_version|int <= apt_sources_debian_archive_up_to_ver %}
+{% elif (not apt_sources_testing) and (ansible_distribution_major_version|int <= apt_sources_debian_archive_up_to_ver) %}
 {% set sources = apt_sources.debian_archive %}
 {% else %}
 {% set sources = apt_sources.debian %}
