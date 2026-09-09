@@ -13,7 +13,7 @@
 {% for source in sources %}
 {% for suite in source.suites %}
 {% for type in source.types %}
-{{ type }} http://{{ source.uri.host }}{% if source.uri.port != 80 %}:{{ source.uri.port }}{% endif %}/{{ source.uri.path }}/ {{ suite }} {{ source.components|join(' ') }}
+{% if not source.enabled %}# {% endif %}{{ type }} http://{{ source.uri.host }}{% if source.uri.port != 80 %}:{{ source.uri.port }}{% endif %}/{{ source.uri.path }}/ {{ suite }} {{ source.components|join(' ') }}
 {% endfor %}
 
 {% endfor %}

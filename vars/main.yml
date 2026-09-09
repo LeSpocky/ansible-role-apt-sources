@@ -22,6 +22,7 @@ apt_sources:
         path: "{{ apt_sources_debian_uri_path }}"
       suites: "{{ apt_sources_debian_suites | reject('eq', '') }}"
       components: "{{ apt_sources_debian_components }}"
+      enabled: true
     - types: "{{ apt_sources_types }}"
       uri:
         host: "{{ apt_sources_debian_security_uri_host }}"
@@ -29,6 +30,7 @@ apt_sources:
         path: "{{ apt_sources_debian_security_uri_path }}"
       suites: "{{ apt_sources_debian_security_suites | reject('eq', '') }}"
       components: "{{ apt_sources_debian_components }}"
+      enabled: true
   debian_archive:
     - types: "{{ apt_sources_types }}"
       uri:
@@ -37,6 +39,7 @@ apt_sources:
         path: "{{ apt_sources_debian_archive_uri_path }}"
       suites: "{{ apt_sources_debian_suites | reject('eq', '') }}"
       components: "{{ apt_sources_debian_components }}"
+      enabled: true
     - types: "{{ apt_sources_types }}"
       uri:
         host: "{{ apt_sources_debian_archive_uri_host }}"
@@ -45,6 +48,7 @@ apt_sources:
       suites:
         - "{{ ansible_distribution_release }}/updates"
       components: "{{ apt_sources_debian_components }}"
+      enabled: true
   debian_unstable:
     - types: "{{ apt_sources_types }}"
       uri:
@@ -54,6 +58,7 @@ apt_sources:
       suites:
         - unstable
       components: "{{ apt_sources_debian_components }}"
+      enabled: true
   ubuntu:
     - types: "{{ apt_sources_types }}"
       uri:
@@ -65,6 +70,7 @@ apt_sources:
         - "{{ ansible_distribution_release }}-updates"
         - "{{ ansible_distribution_release }}-backports"
       components: "{{ apt_sources_ubuntu_components }}"
+      enabled: true
     - types: "{{ apt_sources_types }}"
       uri:
         host: "{{ apt_sources_ubuntu_uri_security_host }}"
@@ -73,3 +79,4 @@ apt_sources:
       suites:
         - "{{ ansible_distribution_release }}-security"
       components: "{{ apt_sources_ubuntu_components }}"
+      enabled: true
