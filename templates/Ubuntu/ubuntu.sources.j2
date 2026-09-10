@@ -8,5 +8,6 @@ URIs: http://{{ source.uri.host }}{% if source.uri.port != 80 %}:{{ source.uri.p
 Suites: {{ source.suites|join(' ') }}
 Components: {{ source.components|join(' ') }}
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Enabled: {% if not source.enabled %}no{% else %}yes{% endif +%}
 
 {% endfor %}
