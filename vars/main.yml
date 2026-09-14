@@ -30,7 +30,7 @@ apt_sources:
         path: "{{ apt_sources_debian_security_uri_path }}"
       suites: "{{ apt_sources_debian_security_suites | reject('eq', '') }}"
       components: "{{ apt_sources_debian_components }}"
-      enabled: "{{ (ansible_distribution_major_version | int) >= apt_sources_debian_security_from_ver }}"
+      enabled: "{{ apt_sources_testing or ((ansible_distribution_major_version | int) >= apt_sources_debian_security_from_ver) }}"
   debian_archive:
     - types: "{{ apt_sources_types }}"
       uri:
