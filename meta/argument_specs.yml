@@ -1,0 +1,228 @@
+# SPDX-FileCopyrightText: 2026 Alexander Dahl <post@lespocky.de>
+# SPDX-License-Identifier: MIT
+---
+argument_specs:
+  # roles/lespocky.apt_sources/tasks/main.yml entry point
+  main:
+    short_description: Configure apt sources on Debian based machines
+    author:
+      - Alexander Dahl
+    options:
+      apt_sources_backports:
+        type: bool
+
+      apt_sources_debian_archive_up_to_ver:
+        type: int
+
+      apt_sources_debian_security_from_ver:
+        type: int
+
+      apt_sources_testing:
+        type: bool
+
+      apt_sources_unstable:
+        type: bool
+
+      apt_sources_types:
+        type: list
+        elements: str
+        choices:
+          - "deb"
+          - "deb-src"
+
+      apt_sources_debian_components:
+        type: list
+        elements: str
+
+      apt_sources_debian_uri_host:
+        type: str
+
+      apt_sources_debian_uri_port:
+        type: int
+
+      apt_sources_debian_uri_path:
+        type: str
+
+      apt_sources_debian_security_uri_host:
+        type: str
+
+      apt_sources_debian_security_uri_port:
+        type: int
+
+      apt_sources_debian_security_uri_path:
+        type: str
+
+      apt_sources_debian_archive_uri_host:
+        type: str
+
+      apt_sources_debian_archive_uri_port:
+        type: int
+
+      apt_sources_debian_archive_uri_path:
+        type: str
+
+      apt_sources_debian_archive_security_uri_path:
+        type: str
+
+      apt_sources_ubuntu_uri_host:
+        type: str
+
+      apt_sources_ubuntu_uri_port:
+        type: int
+
+      apt_sources_ubuntu_uri_path:
+        type: str
+
+      apt_sources_ubuntu_uri_security_host:
+        type: str
+
+      apt_sources_ubuntu_uri_security_port:
+        type: int
+
+      apt_sources_ubuntu_uri_security_path:
+        type: str
+
+      apt_sources_ubuntu_components:
+        type: list
+        elements: str
+
+      apt_sources_debian_suites:
+        type: list
+        elements: str
+
+      apt_sources_debian_security_suites:
+        type: list
+        elements: str
+
+      apt_sources:
+        type: dict
+        required: true
+        options:
+          debian:
+            type: list
+            elements: dict
+            required: true
+            options:
+              types:        # apt_sources_types
+                type: list
+                elements: str
+                required: true
+              uri:
+                type: dict
+                required: true
+                options:
+                  host:     # apt_sources_debian_uri_host
+                    type: str
+                    required: true
+                  port:     # apt_sources_debian_uri_port
+                    type: int
+                    required: true
+                  path:     # apt_sources_debian_uri_path
+                    type: str
+                    required: true
+              suites:       # apt_sources_debian_suites
+                type: list
+                elements: str
+                required: true
+              components:   # apt_sources_debian_components
+                type: list
+                elements: str
+                required: true
+              enabled:
+                type: bool
+          debian_archive:
+            type: list
+            elements: dict
+            required: true
+            options:
+              types:        # apt_sources_types
+                type: list
+                elements: str
+                required: true
+              uri:
+                type: dict
+                required: true
+                options:
+                  host:     # apt_sources_debian_archive_uri_host
+                    type: str
+                    required: true
+                  port:     # apt_sources_debian_archive_uri_port
+                    type: int
+                    required: true
+                  path:     # apt_sources_debian_archive_uri_path
+                    type: str
+                    required: true
+              suites:       # apt_sources_debian_suites
+                type: list
+                elements: str
+                required: true
+              components:   # apt_sources_debian_components
+                type: list
+                elements: str
+                required: true
+              enabled:
+                type: bool
+          debian_unstable:
+            type: list
+            elements: dict
+            required: true
+            options:
+              types:        # apt_sources_types
+                type: list
+                elements: str
+                required: true
+              uri:
+                type: dict
+                required: true
+                options:
+                  host:     # apt_sources_debian_uri_host
+                    type: str
+                    required: true
+                  port:     # apt_sources_debian_uri_port
+                    type: int
+                    required: true
+                  path:     # apt_sources_debian_uri_path
+                    type: str
+                    required: true
+              suites:       # apt_sources_debian_suites
+                type: list
+                elements: str
+                required: true
+              components:   # apt_sources_debian_components
+                type: list
+                elements: str
+                required: true
+              enabled:
+                type: bool
+          ubuntu:
+            type: list
+            elements: dict
+            required: true
+            options:
+              types:        # apt_sources_types
+                type: list
+                elements: str
+                required: true
+              uri:
+                type: dict
+                required: true
+                options:
+                  host:     # apt_sources_ubuntu_uri_host
+                    type: str
+                    required: true
+                  port:     # apt_sources_ubuntu_uri_port
+                    type: int
+                    required: true
+                  path:     # apt_sources_ubuntu_uri_path
+                    type: str
+                    required: true
+              suites:
+                type: list
+                elements: str
+                required: true
+              components:   # apt_sources_ubuntu_components
+                type: list
+                elements: str
+                required: true
+              enabled:
+                type: bool
