@@ -18,26 +18,26 @@
 
 - name: Build apt sources.list for older Debian hosts from template
   ansible.builtin.template:
-    src: "templates/{{ ansible_distribution }}/sources.list.j2"
+    src: "templates/{{ ansible_facts['distribution'] }}/sources.list.j2"
     dest: /etc/apt/sources.list
     owner: root
     group: root
     mode: '0644'
     backup: true
-  when: ansible_distribution == "Debian"
+  when: ansible_facts['distribution'] == "Debian"
   notify:
     - 'lespocky.apt_sources : Update apt cache'
 
 - name: Build apt sources for recent Ubuntu hosts from template
   ansible.builtin.template:
-    src: "templates/{{ ansible_distribution }}/ubuntu.sources.j2"
+    src: "templates/{{ ansible_facts['distribution'] }}/ubuntu.sources.j2"
     dest: /etc/apt/sources.list.d/ubuntu.sources
     owner: root
     group: root
     mode: '0644'
     backup: true
-  when: (ansible_distribution == "Ubuntu") and
-        (ansible_distribution_version is version('24.04', '>='))
+  when: (ansible_facts['distribution'] == "Ubuntu") and
+        (ansible_facts['distribution_version'] is version('24.04', '>='))
   notify:
     - 'lespocky.apt_sources : Update apt cache'
 

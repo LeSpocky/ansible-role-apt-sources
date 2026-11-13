@@ -4,12 +4,12 @@
 # yamllint disable rule:line-length
 
 apt_sources_debian_suites:
-  - "{{ ansible_distribution_release }}"
-  - "{% if (ansible_distribution_major_version | int) > apt_sources_debian_archive_up_to_ver %}{{ ansible_distribution_release }}-updates{% else %}{{ '' }}{% endif %}"
-  - "{% if apt_sources_backports %}{{ ansible_distribution_release }}-backports{% else %}{{ '' }}{% endif %}"
+  - "{{ ansible_facts['distribution_release'] }}"
+  - "{% if (ansible_facts['distribution_major_version'] | int) > apt_sources_debian_archive_up_to_ver %}{{ ansible_facts['distribution_release'] }}-updates{% else %}{{ '' }}{% endif %}"
+  - "{% if apt_sources_backports %}{{ ansible_facts['distribution_release'] }}-backports{% else %}{{ '' }}{% endif %}"
 
 apt_sources_debian_security_suites:
-  - "{% if apt_sources_testing or (ansible_distribution_major_version | int > 10) %}{{ ansible_distribution_release }}-security{% else %}{{ ansible_distribution_release }}/updates{% endif %}"
+  - "{% if apt_sources_testing or (ansible_facts['distribution_major_version'] | int > 10) %}{{ ansible_facts['distribution_release'] }}-security{% else %}{{ ansible_facts['distribution_release'] }}/updates{% endif %}"
 
 # yamllint enable rule:line-length
 
@@ -30,7 +30,7 @@ apt_sources:
         path: "{{ apt_sources_debian_security_uri_path }}"
       suites: "{{ apt_sources_debian_security_suites | reject('eq', '') }}"
       components: "{{ apt_sources_debian_components }}"
-      enabled: "{{ apt_sources_testing or ((ansible_distribution_major_version | int) >= apt_sources_debian_security_from_ver) }}"
+      enabled: "{{ apt_sources_testing or ((ansible_facts['distribution_major_version'] | int) >= apt_sources_debian_security_from_ver) }}"
   debian_archive:
     - types: "{{ apt_sources_types }}"
       uri:
@@ -46,7 +46,7 @@ apt_sources:
         port: "{{ apt_sources_debian_archive_uri_port }}"
         path: "{{ apt_sources_debian_archive_security_uri_path }}"
       suites:
-        - "{{ ansible_distribution_release }}/updates"
+        - "{{ ansible_facts['distribution_release'] }}/updates"
       components: "{{ apt_sources_debian_components }}"
       enabled: true
   debian_unstable:
@@ -66,9 +66,9 @@ apt_sources:
         port: "{{ apt_sources_ubuntu_uri_port }}"
         path: "{{ apt_sources_ubuntu_uri_path }}"
       suites:
-        - "{{ ansible_distribution_release }}"
-        - "{{ ansible_distribution_release }}-updates"
-        - "{{ ansible_distribution_release }}-backports"
+        - "{{ ansible_facts['distribution_release'] }}"
+        - "{{ ansible_facts['distribution_release'] }}-updates"
+        - "{{ ansible_facts['distribution_release'] }}-backports"
       components: "{{ apt_sources_ubuntu_components }}"
       enabled: true
     - types: "{{ apt_sources_types }}"
@@ -77,6 +77,6 @@ apt_sources:
         port: "{{ apt_sources_ubuntu_uri_security_port }}"
         path: "{{ apt_sources_ubuntu_uri_security_path }}"
       suites:
-        - "{{ ansible_distribution_release }}-security"
+        - "{{ ansible_facts['distribution_release'] }}-security"
       components: "{{ apt_sources_ubuntu_components }}"
       enabled: true
